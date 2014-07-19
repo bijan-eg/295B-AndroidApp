@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textReserved"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/reserved"
+        android:textSize="30sp"
+         />
+
+</LinearLayout>
+
+<!-- <ListView
+        android:id="@+id/listReserved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView> -->
