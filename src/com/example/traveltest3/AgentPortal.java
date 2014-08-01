@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class AgentPortal extends Activity{
 	Context context = this;

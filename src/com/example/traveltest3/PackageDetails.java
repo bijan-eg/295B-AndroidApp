@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PackageDetails extends Activity{
 	TextView pkgName, pkgdesc, pkgSDate, pkgEDate, pkgType, pkgStatus;

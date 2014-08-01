@@ -32,32 +32,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class createdTab extends ListFragment implements CallBackListener {
-	
 	protected Object mActionMode;
-	public int selectedItem = -1;		
+	public int longClickedItem = -1;		
 	List<String> packageNames = new ArrayList<String>();
 	List<TravelPackage> packages = new ArrayList<TravelPackage>();
 	public String token="hell yah";
-		
-//	int longClickedPkg;
-//	String myurlString = "http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/";
-	
     
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
 		super.onActivityCreated(savedInstanceState);
 		
+		//for showing the list of latest packages in the created tab listView
 		new RequestTask().execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/");		
 		
+		//for deleting, editing or reserving packages after long click on packages on the list
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//user long clicks on list items or packages
 		    public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
 		        //Get your item here with the position
-//		    	longClickedPkg = position;
 		    	if (mActionMode != null) {
 		            return false;
 		    	}
-	          selectedItem = position;
+		    	longClickedItem = position;
 	          // start the CAB using the ActionMode.Callback defined above
 	          mActionMode = getActivity().startActionMode(mActionModeCallback);
 	          v.setSelected(true);
@@ -66,6 +62,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 		    }
 		});
 		
+		//for viewing package info for each selected package in the list
 		getListView().setOnItemClickListener(new OnItemClickListener() {// user clicking on any of the packages in the listView
 
 			@Override
@@ -107,7 +104,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 	    // called when the user exits the action mode
 	    public void onDestroyActionMode(ActionMode mode) {
 	      mActionMode = null;
-	      selectedItem = -1;
+//	      selectedItem = -1;
 	    }
 
 		@Override //after long touch we see different buttons for the user:
@@ -131,17 +128,12 @@ public class createdTab extends ListFragment implements CallBackListener {
 		}
 	  };
 	
-	  private void delete() { //delete a package
-//		  packages.get(selectedItem).getId()
+	//delete a package
+	  private void delete() { 
 		  TokenRequestTask tokenTask = new TokenRequestTask();
 		  tokenTask.setListener(this);
-		  tokenTask.execute("http://mighty-lowlands-2957.herokuapp.com/api-token-auth/"); //uri is hardcoded inside TokenRequestTask
-  		 
-//		  Toast.makeText(getActivity(),
-//  		        myHttpRequests.getMyHttpPostResponse(), Toast.LENGTH_LONG).show();
-//        	if(myHttpRequests.myHttpDelete(22) == HttpStatus.SC_OK){
-//        		
-//        	}
+		  //does the http request for the token:
+		  tokenTask.execute("http://mighty-lowlands-2957.herokuapp.com/api-token-auth/");
 	  }
 
 	private void edit() { //edit a package
@@ -154,12 +146,9 @@ public class createdTab extends ListFragment implements CallBackListener {
 		    Toast.makeText(getActivity(),
 		        "reserve", Toast.LENGTH_LONG).show();
 	  }
+	   
 	  
-//	public void onListItemClick(ListView l, View v, int position, long id) {
-//		Toast.makeText(getActivity(),
-//		        Integer.toString(position)+"L", Toast.LENGTH_SHORT).show();		
-//	}
-	
+	//this is the task running for showing the list of packages in createdTab
 	class RequestTask extends AsyncTask<String, Void,String>{
 		
 	    @Override
@@ -191,7 +180,9 @@ public class createdTab extends ListFragment implements CallBackListener {
 	    }
 
 	    @Override
-	    protected void onPostExecute(String result) {//runs right after doInBackground and gets that return into this argument
+	    //runs right after doInBackground and gets that return into this argument
+	    //this function is for the createdTab itself and shows the packages list
+	    protected void onPostExecute(String result) {
 	       super.onPostExecute(result);
 	       
 	       try {
@@ -244,7 +235,9 @@ public class createdTab extends ListFragment implements CallBackListener {
 	    }
 	}
 
-@Override
+	@Override
+	//we are using this token callback for the delete method
+	//for edit we have to probably use another one just the same!
 	public void tokenCallback(String result) {
 	try {
 		JSONObject obj = new JSONObject(result);
@@ -255,24 +248,9 @@ public class createdTab extends ListFragment implements CallBackListener {
 	} 
 		Log.v("XXXXXXXXXXX", result);
 		Log.e("tttttttttttttttttttttttttttt", token);
-		 Toast.makeText(getActivity(),
-	  		        token, Toast.LENGTH_LONG).show();
-}
-
-@Override
-public void deleteCallback(String result) {
-	try {
-		JSONObject obj = new JSONObject(result);
-		token = obj.getString("token");
-	} catch (JSONException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} 
-		Log.v("XXXXXXXXXXX", result);
-		Log.e("tttttttttttttttttttttttttttt", token);
-		 Toast.makeText(getActivity(),
-	  		        token, Toast.LENGTH_LONG).show();
-	
-}
-
+		deletePackageRequestTask deleteTask = new deletePackageRequestTask();
+		deleteTask.execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/"+Integer.toString(packages.get(longClickedItem).getId())+"/", token);
+		Toast.makeText(getActivity(),
+	  		        "Package Deleted!", Toast.LENGTH_LONG).show();
+	}
 }

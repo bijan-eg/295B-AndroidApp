@@ -63,7 +63,6 @@ class TokenRequestTask extends AsyncTask<String, Void, String> {
 		        // TODO Auto-generated catch block
 		    }
 			return responseString;
-
 		}
 
 		@Override
