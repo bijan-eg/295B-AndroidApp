@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -25,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,19 +35,14 @@ import android.widget.Toast;
 public class reservedTab extends ListFragment{
 	
 	protected Object mActionMode;
-	public int selectedItem = -1;
-	List<String> values = new ArrayList<String>();
+	public int longClickedItem = -1;		
+	List<String> packageNames = new ArrayList<String>();
+	List<TravelPackage> packages = new ArrayList<TravelPackage>();
+	ArrayAdapter<String> adapter;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		/*
-		String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-		        "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-		        "Linux", "OS/2" };
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
-		setListAdapter(adapter);
-		*/
 		
 		new RequestTask().execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/");
 		
@@ -55,13 +52,30 @@ public class reservedTab extends ListFragment{
 		    	if (mActionMode != null) {
 		            return false;
 		          }
-		          selectedItem = position;
+		    	longClickedItem = position;
 
 		          // start the CAB using the ActionMode.Callback defined above
 		          mActionMode = getActivity().startActionMode(mActionModeCallback);
 		          v.setSelected(true);
 		          return true;
 		    }
+		});
+		
+		getListView().setOnItemClickListener(new OnItemClickListener() {// user clicking on any of the published packages in the listView
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent in = new Intent(view.getContext().getApplicationContext(), PackageDetails.class);
+				in.putExtra("slctdpackageName", packages.get(position).getPackage_name());
+                in.putExtra("slctdpackagedesc", packages.get(position).getDescription());
+                in.putExtra("slctdpackageSDate", packages.get(position).getStart_date());
+                in.putExtra("slctdpackageEDate", packages.get(position).getEnd_date());
+                in.putExtra("slctdpackageType", packages.get(position).getPackage_type());
+                in.putExtra("slctdpackageStatus", packages.get(position).getStatus());
+                startActivity(in);				
+			}
+			
 		});
 	}
 	
@@ -88,7 +102,7 @@ public class reservedTab extends ListFragment{
 	    // called when the user exits the action mode
 	    public void onDestroyActionMode(ActionMode mode) {
 	      mActionMode = null;
-	      selectedItem = -1;
+//	      selectedItem = -1;
 	    }
 
 		@Override
@@ -105,8 +119,8 @@ public class reservedTab extends ListFragment{
 	  };
 	
 	  private void publish() {
-		    Toast.makeText(getActivity(),
-		        String.valueOf(selectedItem), Toast.LENGTH_LONG).show();
+//		    Toast.makeText(getActivity(),
+//		        String.valueOf(selectedItem), Toast.LENGTH_LONG).show();
 	  }  
 	
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -145,21 +159,33 @@ public class reservedTab extends ListFragment{
 	        } 	         
 	       return responseString;	       
 	    }
-
+	    
 	    @Override
 	    protected void onPostExecute(String result) {
 	       super.onPostExecute(result);
-	       //adapter.add(result);
+	       packages.clear();
 	       try {
 	    	   JSONArray jArray = new JSONArray(result);
 	    	   for (int i=0; i < jArray.length(); i++)
 	    	   {
+	    		   TravelPackage myPackage = new TravelPackage();
 	    		   try {
 	    			   JSONObject jObject = jArray.getJSONObject(i);
 	    			   // Pulling items from the array
 	    			   if(jObject.getString("status").equalsIgnoreCase("reserved")){
-	    				   String oneObjectsItem = jObject.getString("package_name");
-	    				   values.add(oneObjectsItem);
+	    				   myPackage.setId(Integer.parseInt(jObject.getString("id")));
+		    			   myPackage.setPackage_name(jObject.getString("package_name"));
+		    			   myPackage.setDescription(jObject.getString("description"));
+		    			   myPackage.setStart_date(jObject.getString("start_date"));
+		    			   myPackage.setEnd_date(jObject.getString("end_date"));
+		    			   myPackage.setPackage_type(jObject.getString("package_type"));
+		    			   myPackage.setflight(jObject.getBoolean("flight"));
+		    			   myPackage.setRestaurant(jObject.getBoolean("restaurant"));
+		    			   myPackage.setHotel(jObject.getBoolean("hotel"));
+		    			   myPackage.setInsurance(jObject.getBoolean("insurance"));
+		    			   myPackage.setLocalBooking(jObject.getBoolean("local_booking"));
+		    			   myPackage.setStatus(jObject.getString("status"));
+		    			   packages.add(myPackage);
 	    			   }
 			       } catch (JSONException e) {
 			    	   // Oops
@@ -169,10 +195,26 @@ public class reservedTab extends ListFragment{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	       ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
-		       setListAdapter(adapter);
-		    	//adapter.notifyDataSetChanged();	    	
-		       //Do anything with response..
-	    }
+	       adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, packageNames);
+	       setListAdapter(adapter);
+	       
+	       if(!packageNames.isEmpty())
+	       {
+	    	   packageNames.clear();
+	    	   adapter.notifyDataSetChanged();
+	    	   for(int i = 0 ; i<packages.size() ; i++){
+		       		packageNames.add(packages.get(i).getPackage_name());
+		       	}
+	    	   adapter.notifyDataSetChanged();
+	       }else{
+	    	   for(int i = 0 ; i<packages.size() ; i++){
+		       		packageNames.add(packages.get(i).getPackage_name());
+	    	   }
+	    	   adapter.notifyDataSetChanged();
+	       }
+       					       
+		    Toast.makeText(getActivity(), 
+		    		Integer.toString(packages.size())+" packages found", Toast.LENGTH_SHORT).show();	    
+		 }
 	}
 }

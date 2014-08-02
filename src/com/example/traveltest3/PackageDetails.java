@@ -11,6 +11,7 @@ public class PackageDetails extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.package_detail);
+		
 		pkgName = (TextView)findViewById(R.id.textView12);
 		pkgdesc = (TextView)findViewById(R.id.textView2);
 		pkgSDate = (TextView)findViewById(R.id.textView4);

@@ -5,9 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -29,6 +28,9 @@
         <activity android:name="Signup"></activity>
         <activity android:name="GuideLogin"></activity>
         <activity android:name="GuidePortal"></activity>
+        <activity android:name="PackageDetails"></activity>
+        <activity android:name="NewPackage"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

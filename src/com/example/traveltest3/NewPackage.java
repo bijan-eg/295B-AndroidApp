@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,7 @@ public class NewPackage extends Activity implements CallBackListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.new_package);
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		createPackage = (Button)findViewById(R.id.createNew);
 		newpkckgServices = (Button)findViewById(R.id.newpkckgServices);
 		pkgName = (EditText)findViewById(R.id.editText1);

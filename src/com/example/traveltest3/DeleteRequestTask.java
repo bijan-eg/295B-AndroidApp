@@ -21,7 +21,6 @@ class DeleteRequestTask extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... uri) {
 			HttpResponse response;
-//		    String responseString = null;
 		    HttpClient httpclient = new DefaultHttpClient();
 		    HttpDelete httpdel = new HttpDelete(uri[0]);
 
@@ -36,9 +35,6 @@ class DeleteRequestTask extends AsyncTask<String, Void, String> {
 	            		ByteArrayOutputStream out = new ByteArrayOutputStream();
 	            		response.getEntity().writeTo(out);
 	            		out.close();
-//	            		responseString = out.toString();     
-//	            		return responseString;	            		
-	            		
 	            	} else{
 	                //Closes the connection.
 		                response.getEntity().getContent().close();
@@ -50,19 +46,6 @@ class DeleteRequestTask extends AsyncTask<String, Void, String> {
 		    } catch (IOException e) {
 		        // TODO Auto-generated catch block
 		    }
-//			return responseString;
 		    return null;
 		}
-
-//		@Override
-//		protected void onPostExecute(String result) {
-//			super.onPostExecute(result);
-//			
-//			try { 
-//	            // call callback
-//	            mListener.deleteCallback(result);
-//	        } catch (Exception e) {
-//	            e.printStackTrace();
-//	        }
-//		}
 }

@@ -7,14 +7,16 @@ import android.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class AgentPortal extends Activity{
 	Context context = this;
 	protected void onCreate(android.os.Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		ActionBar.Tab created = actionBar.newTab().setText("Created");
@@ -28,7 +30,7 @@ public class AgentPortal extends Activity{
 		published.setTabListener(new MyTabListener(Fpublished));
 		actionBar.addTab(created);
 		actionBar.addTab(reserved);
-		actionBar.addTab(published);
+		actionBar.addTab(published);		
 	};
 	
 	@Override
@@ -79,7 +81,7 @@ public class AgentPortal extends Activity{
 		@Override
 		public void onTabSelected(Tab tab, FragmentTransaction ft) {
 			// TODO Auto-generated method stub
-			ft.add(R.id.fragment_place, fragment, null);			
+			ft.add(R.id.fragment_place, fragment, null);
 		}
 
 		@Override

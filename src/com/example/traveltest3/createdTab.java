@@ -36,8 +36,8 @@ public class createdTab extends ListFragment implements CallBackListener {
 	public int longClickedItem = -1;		
 	List<String> packageNames = new ArrayList<String>();
 	List<TravelPackage> packages = new ArrayList<TravelPackage>();
-	public String token="hell yah";
-    
+	public String token="b";
+	ArrayAdapter<String> adapter;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
@@ -88,7 +88,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 	      // Inflate a menu resource providing context menu items
 	      MenuInflater inflater = mode.getMenuInflater();
 	      // assumes that you have "contexual.xml" menu resources
-	      //this is for long touch on listView ittems
+	      //this is for long touch on listView items
 	      inflater.inflate(R.menu.cab_created, menu);
 	      return true;
 	    }
@@ -118,10 +118,6 @@ public class createdTab extends ListFragment implements CallBackListener {
 				 edit();
 				 mode.finish();
 				 return true;
-			 case R.id.createdmenuitem_reserve:
-				 reserve();
-				 mode.finish();
-				 return true;
 			 default:
 				 return false;
 			 }
@@ -134,6 +130,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 		  tokenTask.setListener(this);
 		  //does the http request for the token:
 		  tokenTask.execute("http://mighty-lowlands-2957.herokuapp.com/api-token-auth/");
+		  adapter.notifyDataSetChanged();
 	  }
 
 	private void edit() { //edit a package
@@ -142,11 +139,6 @@ public class createdTab extends ListFragment implements CallBackListener {
 		    startActivity(i);
 	  }
 	  
-	  private void reserve() { //reserve a package
-		    Toast.makeText(getActivity(),
-		        "reserve", Toast.LENGTH_LONG).show();
-	  }
-	   
 	  
 	//this is the task running for showing the list of packages in createdTab
 	class RequestTask extends AsyncTask<String, Void,String>{
@@ -184,7 +176,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 	    //this function is for the createdTab itself and shows the packages list
 	    protected void onPostExecute(String result) {
 	       super.onPostExecute(result);
-	       
+	       packages.clear();
 	       try {
 	    	   JSONArray jArray = new JSONArray(result);
 	    	   for (int i=0; i < jArray.length(); i++)
@@ -214,9 +206,10 @@ public class createdTab extends ListFragment implements CallBackListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	       	
-	       ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, packageNames);
-	       	
+	       //populate the list with package names
+	        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, packageNames);
+	       setListAdapter(adapter);
+	       
 	       if(!packageNames.isEmpty())
 	       {
 	    	   packageNames.clear();
@@ -229,9 +222,11 @@ public class createdTab extends ListFragment implements CallBackListener {
 	    	   for(int i = 0 ; i<packages.size() ; i++){
 		       		packageNames.add(packages.get(i).getPackage_name());
 	    	   }
+	    	   adapter.notifyDataSetChanged();
 	       }
-	       		setListAdapter(adapter);			       
-			    Toast.makeText(getActivity(), Integer.toString(packages.size())+" packages found", Toast.LENGTH_LONG).show();
+       					       
+		    Toast.makeText(getActivity(), 
+		    		Integer.toString(packages.size())+" packages found", Toast.LENGTH_SHORT).show();
 	    }
 	}
 
@@ -251,6 +246,6 @@ public class createdTab extends ListFragment implements CallBackListener {
 		deletePackageRequestTask deleteTask = new deletePackageRequestTask();
 		deleteTask.execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/"+Integer.toString(packages.get(longClickedItem).getId())+"/", token);
 		Toast.makeText(getActivity(),
-	  		        "Package Deleted!", Toast.LENGTH_LONG).show();
+	  		        "Package Deleted!", Toast.LENGTH_SHORT).show();
 	}
 }
