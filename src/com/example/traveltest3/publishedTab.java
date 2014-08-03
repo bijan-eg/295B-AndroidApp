@@ -43,7 +43,7 @@ public class publishedTab extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		new RequestTask().execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/");
+		new RequestTask().execute("http://blooming-dusk-7345.herokuapp.com/agentapp/packages/");
 		
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 		    public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {

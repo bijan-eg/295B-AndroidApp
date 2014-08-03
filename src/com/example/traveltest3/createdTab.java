@@ -44,7 +44,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 		super.onActivityCreated(savedInstanceState);
 		
 		//for showing the list of latest packages in the created tab listView
-		new RequestTask().execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/");		
+		new RequestTask().execute("http://blooming-dusk-7345.herokuapp.com/agentapp/packages/");		
 		
 		//for deleting, editing or reserving packages after long click on packages on the list
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {//user long clicks on list items or packages
@@ -129,7 +129,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 		  TokenRequestTask tokenTask = new TokenRequestTask();
 		  tokenTask.setListener(this);
 		  //does the http request for the token:
-		  tokenTask.execute("http://mighty-lowlands-2957.herokuapp.com/api-token-auth/");
+		  tokenTask.execute("http://blooming-dusk-7345.herokuapp.com/api-token-auth/");
 		  adapter.notifyDataSetChanged();
 	  }
 
@@ -244,7 +244,7 @@ public class createdTab extends ListFragment implements CallBackListener {
 		Log.v("XXXXXXXXXXX", result);
 		Log.e("tttttttttttttttttttttttttttt", token);
 		deletePackageRequestTask deleteTask = new deletePackageRequestTask();
-		deleteTask.execute("http://mighty-lowlands-2957.herokuapp.com/agentapp/packages/"+Integer.toString(packages.get(longClickedItem).getId())+"/", token);
+		deleteTask.execute("http://blooming-dusk-7345.herokuapp.com/agentapp/packages/"+Integer.toString(packages.get(longClickedItem).getId())+"/", token);
 		Toast.makeText(getActivity(),
 	  		        "Package Deleted!", Toast.LENGTH_SHORT).show();
 	}

@@ -28,5 +28,4 @@ public class PackageDetails extends Activity{
 		pkgStatus.setText(intent.getStringExtra("slctdpackageStatus"));
 //		Toast.makeText(getActivity(), intent.getStringExtra("slctdpackageSDate"), Toast.LENGTH_LONG).show();
 	}
-
 }
