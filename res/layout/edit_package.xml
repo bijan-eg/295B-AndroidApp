@@ -75,7 +75,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textView1"
             android:layout_marginTop="33dp"
-            android:text="Desc"
+            android:text="Description"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <DatePicker
@@ -115,7 +115,7 @@
              android:layout_alignParentRight="true"
              android:layout_below="@+id/textView5"
              android:calendarViewShown="false" />
-
+<!-- 
          <CheckBox
              android:id="@+id/flightCheckBox"
              android:layout_width="wrap_content"
@@ -155,26 +155,25 @@
              android:layout_height="wrap_content"
              android:layout_alignParentLeft="true"
              android:layout_below="@+id/insuranceCheckBox"
-             android:text="Hotel" />
-
-         <Button
-             android:id="@+id/save"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_below="@+id/hotelCheckBox"
-             android:layout_marginTop="28dp"
-             android:layout_toRightOf="@+id/textView3"
-             android:text="Save" />
+             android:text="Hotel" />-->
 
          <Button
              android:id="@+id/pkckgServices"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_alignBaseline="@+id/save"
-             android:layout_alignBottom="@+id/save"
-             android:layout_alignParentRight="true"
-             android:layout_marginRight="51dp"
-             android:text="Services" />
+             android:layout_below="@+id/datePicker2"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="79dp"
+             android:text="Select Package Services" />
+
+         <Button
+             android:id="@+id/save"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_below="@+id/pkckgServices"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="45dp"
+             android:text="Save" />
          
     </RelativeLayout>
 

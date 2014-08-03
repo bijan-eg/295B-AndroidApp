@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -44,7 +45,9 @@ public class NewPackage extends Activity implements CallBackListener{
 			
 			@Override
 			public void onClick(View v) {				
-				createNewPackage();				
+				createNewPackage();
+				Intent i = new Intent (context.getApplicationContext(), AgentPortal.class);
+				startActivity(i);
 			}
 		});
 		

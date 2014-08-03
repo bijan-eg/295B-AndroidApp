@@ -134,8 +134,9 @@ public class createdTab extends ListFragment implements CallBackListener {
 	  }
 
 	private void edit() { //edit a package
-		    Toast.makeText(getActivity(), "edit", Toast.LENGTH_LONG).show();
+//		    Toast.makeText(getActivity(), "edit", Toast.LENGTH_LONG).show();
 		    Intent i = new Intent(getActivity(), EditPackage.class);
+		    i.putExtra("pkgID", Integer.toString(packages.get(longClickedItem).getId()));
 		    startActivity(i);
 	  }
 	  
